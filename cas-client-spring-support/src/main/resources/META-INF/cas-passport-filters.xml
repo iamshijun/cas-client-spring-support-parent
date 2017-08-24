@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/util 
+	http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<util:properties id="casPassportProperties" 
+		location="${cas-passport.properties.config.location:classpath:cas-passport.properties}"/>
+
+	<context:property-placeholder location="classpath:cas-passport.properties" />
+	
+	<!-- 这个好像无能为力了,加在web-fragement里吧 或者使用者在web.xml加上
+		<listener>
+			<listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+		</listener>
+	-->
+	
+	<bean id="abstractCASFilter" class="com.kibou.passport.cas.filter.DefaultCASFilter" abstract="true"/>
+
+	<bean id="singleSignOutFilter" parent="abstractCASFilter"  
+		 p:order="1100" p:filterClass="org.jasig.cas.client.session.SingleSignOutFilter"
+		 p:initParameters-ref="casPassportProperties" />
+	
+	<bean id="authenticationFilter" parent="abstractCASFilter"
+	 	 p:order="1200" p:filterClass="com.kibou.passport.cas.filter.CompositeAuthenticationFilter"
+		 p:initParameters-ref="casPassportProperties" />
+	
+	<bean id="compositeTicketValidator" 
+		class="com.kibou.passport.cas.filter.CompositeTicketValidationFilter" autowire="byType"/>
+	
+	<bean id="ticketValidationFilter" parent="abstractCASFilter"
+		p:order="1300" p:filterInstance-ref="compositeTicketValidator" p:initParameters-ref="casPassportProperties">
+		<!-- <property name="initParameters">
+			<props>
+				<prop key="casServerUrlPrefix">${passport.ticketValidationFilter.casServerUrlPrefix}
+				</prop>
+				<prop key="ignorePattern">${passport.ticketValidationFilter.ignorePattern}
+				</prop>
+			</props>
+		</property>-->
+ 	</bean>
+	
+	<bean id="httpServletRequestWrapperFilter" parent="abstractCASFilter"
+		p:order="1400" p:filterClass="org.jasig.cas.client.util.HttpServletRequestWrapperFilter" />
+	
+	<bean id="assertionThreadLocalFilter" parent="abstractCASFilter" 
+		p:order="1500" p:filterClass="org.jasig.cas.client.util.AssertionThreadLocalFilter" />
+	
+	<bean id="securityFilterChain" class="com.kibou.passport.cas.filter.SecurityFilterChain" 
+		p:ignorePattern="${passport.security.ignorePattern:}"
+	/>
+	
+</beans>
+

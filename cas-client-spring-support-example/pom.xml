@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.kibou</groupId>
+		<artifactId>cas-client-spring-support-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>cas-client-spring-support-example</artifactId>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.kibou</groupId>
+			<artifactId>cas-client-spring-support</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>passport</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<webResources>
+						<webResource>
+							<directory>resources2</directory>
+						</webResource>
+					</webResources>
+					<!-- exclude in package pharse -->
+					<!--<packagingExcludes>WEB-INF/web-*.xml</packagingExcludes> -->
+					<!-- exclude in resource pharse -->
+					<warSourceExcludes>WEB-INF/web-*.xml</warSourceExcludes>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<webXml>${webAppDescriptor}</webXml>
+				</configuration>
+			</plugin>
+			<!-- first exec 'mvn install' from parent path,and run with 'mvn tomcat7:run' 
+				from this module path or 'mvn -pl cas-client-spring-support-example tomcat7:run' 
+				from parent path -->
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<port>8083</port>
+					<path>/passport</path>
+					<uriEncoding>UTF-8</uriEncoding>
+					<systemProperties>
+						<JAVA_OPTS>-XX:MaxPermSize=256m</JAVA_OPTS>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>simple</id>
+			<properties>
+				<webAppDescriptor>${project.basedir}/src/main/webapp/WEB-INF/web-simple.xml</webAppDescriptor>
+			</properties>
+		</profile>
+		<profile>
+			<id>security</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<webAppDescriptor>${project.basedir}/src/main/webapp/WEB-INF/web-security.xml</webAppDescriptor>
+			</properties>
+		</profile>
+	</profiles>
+
+</project>
