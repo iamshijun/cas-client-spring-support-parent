@@ -18,7 +18,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.context.ServletContextAware;
 
 //参考 ServletWrappingController
-public class DelegateFilterWrapper
+public class FilterWrapperBean
 		implements Filter, ServletContextAware, BeanNameAware, InitializingBean, DisposableBean {
 
 	/**
@@ -52,19 +52,24 @@ public class DelegateFilterWrapper
 
 	private ServletContext servletContext;
 	
+	private Properties finalFilterInitParameters;
+	
 	private Properties getFilterInitParameters() {
-		if(useParamPrefix) {
-			Properties properties = new Properties();
-			String propertyPrefix = initParamPrefix + "." + filterName + ".";
-			for(String name : initParameters.stringPropertyNames()){
-				if(name.startsWith(propertyPrefix)) {
-					properties.put(name.replaceFirst(propertyPrefix, ""), initParameters.get(name));
+		if(finalFilterInitParameters == null) {
+			if(useParamPrefix) {
+				Properties properties = new Properties();
+				String propertyPrefix = initParamPrefix + "." + filterName + ".";
+				for(String name : initParameters.stringPropertyNames()){
+					if(name.startsWith(propertyPrefix)) {
+						properties.put(name.replaceFirst(propertyPrefix, ""), initParameters.get(name));
+					}
 				}
+				finalFilterInitParameters = properties;
+			}else {
+				finalFilterInitParameters = initParameters;
 			}
-			return properties;
-		}else {
-			return initParameters;
 		}
+		return finalFilterInitParameters;
 	}
 
 	@Override
@@ -86,24 +91,24 @@ public class DelegateFilterWrapper
 
 		@Override
 		public String getFilterName() {
-			return DelegateFilterWrapper.this.getFilterName();
+			return FilterWrapperBean.this.getFilterName();
 		}
 
 		@Override
 		public ServletContext getServletContext() {
-			return DelegateFilterWrapper.this.getServletContext();
+			return FilterWrapperBean.this.getServletContext();
 		}
 
 		@Override
 		public String getInitParameter(String name) {
-			return DelegateFilterWrapper.this.getFilterInitParameters().getProperty(name);
+			return FilterWrapperBean.this.getFilterInitParameters().getProperty(name);
 		}
 
 		@Override
 		@SuppressWarnings("unchecked")
 		public Enumeration<String> getInitParameterNames() {
 			//return (Enumeration)initParameters.keys();
-			return (Enumeration<String>)DelegateFilterWrapper.this.getFilterInitParameters().propertyNames();
+			return (Enumeration<String>)FilterWrapperBean.this.getFilterInitParameters().propertyNames();
 		}
 
 	}

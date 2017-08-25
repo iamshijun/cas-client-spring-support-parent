@@ -18,8 +18,6 @@ public abstract class AbstractCompositeCasFilter<T extends Filter> implements Fi
 
 	protected FilterConfig filterConfig;
 	
-	//private Class<T> targetType;
-	
 	private ConcurrentMap<String,T> cacheFilterMap = new ConcurrentHashMap<>();
 	
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException{

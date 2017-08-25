@@ -22,18 +22,22 @@
 		</listener>
 	-->
 	
-	<bean id="abstractCASFilter" class="com.kibou.passport.cas.filter.DefaultCASFilter" abstract="true"/>
+	<bean id="abstractCASFilter" class="com.kibou.passport.cas.filter.DefaultCasFilter" abstract="true"/>
 
 	<bean id="singleSignOutFilter" parent="abstractCASFilter"  
 		 p:order="1100" p:filterClass="org.jasig.cas.client.session.SingleSignOutFilter"
 		 p:initParameters-ref="casPassportProperties" />
 	
+	
+	<bean id="compositeAuthenticationFilter"
+		 class="com.kibou.passport.cas.filter.CompositeAuthenticationFilter" />
+	
 	<bean id="authenticationFilter" parent="abstractCASFilter"
-	 	 p:order="1200" p:filterClass="com.kibou.passport.cas.filter.CompositeAuthenticationFilter"
+	 	 p:order="1200" p:filterInstance-ref="compositeAuthenticationFilter"
 		 p:initParameters-ref="casPassportProperties" />
 	
 	<bean id="compositeTicketValidator" 
-		class="com.kibou.passport.cas.filter.CompositeTicketValidationFilter" autowire="byType"/>
+		class="com.kibou.passport.cas.filter.CompositeCas30TicketValidationFilter" autowire="byType"/>
 	
 	<bean id="ticketValidationFilter" parent="abstractCASFilter"
 		p:order="1300" p:filterInstance-ref="compositeTicketValidator" p:initParameters-ref="casPassportProperties">

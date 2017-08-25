@@ -2,7 +2,7 @@ package com.kibou.passport.cas.filter;
 
 import org.springframework.core.Ordered;
 
-public class DefaultCASFilter extends DelegateFilterWrapper implements CASFilter, Ordered {
+public class DefaultCasFilter extends FilterWrapperBean implements CasFilter, Ordered {
 
 	private int order;
 

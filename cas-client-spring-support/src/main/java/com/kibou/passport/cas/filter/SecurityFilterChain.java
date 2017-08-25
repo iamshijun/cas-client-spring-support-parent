@@ -28,7 +28,7 @@ import com.kibou.passport.util.ServletPathMatcher;
 
 public class SecurityFilterChain implements Filter, ApplicationListener<ContextRefreshedEvent> {
 
-	private List<CASFilter> casFilters;
+	private List<CasFilter> casFilters;
 	
 	private List<AuthorizationFilter> authorizationFilters;
 	
@@ -44,7 +44,7 @@ public class SecurityFilterChain implements Filter, ApplicationListener<ContextR
 		return mergeFilters;
 	}
 	
-	public void setCasFilters(List<CASFilter> casFilters) {
+	public void setCasFilters(List<CasFilter> casFilters) {
 		this.casFilters = casFilters;
 	}
 	
@@ -55,7 +55,7 @@ public class SecurityFilterChain implements Filter, ApplicationListener<ContextR
 	public SecurityFilterChain(){
 	}
 	
-	public SecurityFilterChain(List<CASFilter> casFilters,List<AuthorizationFilter> authorizationFilters){
+	public SecurityFilterChain(List<CasFilter> casFilters,List<AuthorizationFilter> authorizationFilters){
 		//System.out.println("SecurityFilterChain.SecurityFilterChain(casFilters,authorizationFilters)");
 		this.casFilters = casFilters;
 		this.authorizationFilters = authorizationFilters;
@@ -71,7 +71,7 @@ public class SecurityFilterChain implements Filter, ApplicationListener<ContextR
 		
 		if(casFilters == null){
 			//detectAllCasFilters
-			Map<String, CASFilter> casFiltersMap = applicationContext.getBeansOfType(CASFilter.class);//spring给我们返回的就是一个LinkedHashMap排过的?
+			Map<String, CasFilter> casFiltersMap = applicationContext.getBeansOfType(CasFilter.class);//spring给我们返回的就是一个LinkedHashMap排过的?
 			if(!casFiltersMap.isEmpty()){
 				casFilters = new ArrayList<>(casFiltersMap.size());
 				casFilters.addAll(casFiltersMap.values());

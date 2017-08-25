@@ -29,6 +29,14 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
@@ -43,6 +51,14 @@
 					<warSourceExcludes>WEB-INF/web-*.xml</warSourceExcludes>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<webXml>${webAppDescriptor}</webXml>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Version>${project.version}</Implementation-Version>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
 			<!-- first exec 'mvn install' from parent path,and run with 'mvn tomcat7:run' 
@@ -59,6 +75,9 @@
 					<systemProperties>
 						<JAVA_OPTS>-XX:MaxPermSize=256m</JAVA_OPTS>
 					</systemProperties>
+					<server>tomcat7</server>
+					<username>foo</username>
+					<password>bar</password>
 				</configuration>
 			</plugin>
 

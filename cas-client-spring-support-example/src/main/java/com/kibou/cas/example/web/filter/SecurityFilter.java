@@ -1,4 +1,4 @@
-package com.kibou;
+package com.kibou.cas.example.web.filter;
 
 import java.io.IOException;
 
@@ -30,6 +30,7 @@ public class SecurityFilter implements Filter {
 		if(assertion != null) {
 			System.out.println("===========" + assertion.getPrincipal() + "===========");
 		}
+		chain.doFilter(req, resp);
 	}
 
 	@Override
