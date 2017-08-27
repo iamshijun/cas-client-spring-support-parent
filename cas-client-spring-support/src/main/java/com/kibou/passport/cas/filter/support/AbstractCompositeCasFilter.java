@@ -13,30 +13,50 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kibou.passport.util.CasClientUtils;
 
-public abstract class AbstractCompositeCasFilter<T extends Filter> implements Filter{
+
+/**
+ * Filter组合基础类 根据不同的key选择不同的Filter来处理后续的请求 see: {@link #cacheFilterMap}
+ * @author aimysaber@gmail.com
+ *
+ * @param <T>
+ */
+public abstract class AbstractCompositeCasFilter<K,T extends Filter> implements Filter{
 
 	protected FilterConfig filterConfig;
 	
-	private ConcurrentMap<String,T> cacheFilterMap = new ConcurrentHashMap<>();
+	private final ConcurrentMap<K,T> cacheFilterMap = new ConcurrentHashMap<>();
+	
+	private boolean goThroughIfAssertionFound = true;
+	
+	public void setGoThroughIfAssertionFound(boolean goThroughIfAssertionFound) {
+		this.goThroughIfAssertionFound = goThroughIfAssertionFound;
+	}
 	
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException{
 		
 		final HttpServletRequest request = (HttpServletRequest) servletRequest;
 		final HttpServletResponse response = (HttpServletResponse) servletResponse;
 		
+		if(goThroughIfAssertionFound && CasClientUtils.getAssertion(request) != null){
+			// System.out.println(request.getRequestedSessionId());
+			filterChain.doFilter(request, response);
+			return;
+		}
+		
 		doInternalFilter(request,response,filterChain);
 	}
 	
 	protected abstract void doInternalFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException;
 
-	protected abstract T createInnerFilter(FilterConfig config,ServletRequest request) throws ServletException;
+	protected abstract T createInnerFilter(K key,FilterConfig config,ServletRequest request) throws ServletException;
 	
-	protected T getInnerFilter(ServletRequest request,String key) throws ServletException{
+	protected T getInnerFilter(ServletRequest request,K key) throws ServletException{
 		T innerFilter = cacheFilterMap.get(key);
 		
 		if(innerFilter == null){
-			cacheFilterMap.putIfAbsent(key, createInnerFilter(filterConfig, request));
+			cacheFilterMap.putIfAbsent(key, createInnerFilter(key, filterConfig, request));
 			innerFilter = cacheFilterMap.get(key);
 		}
 		return innerFilter;

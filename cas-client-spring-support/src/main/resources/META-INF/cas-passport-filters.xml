@@ -29,6 +29,11 @@
 		 p:initParameters-ref="casPassportProperties" />
 	
 	
+	<bean id="authenticationPreFilter" parent="abstractCASFilter"
+		p:order="1100" p:filterClass="com.kibou.passport.cas.filter.support.CasSSOClusterAuthenticationPreFilter"
+		p:initParameters-ref="casPassportProperties"
+	 />
+	
 	<bean id="compositeAuthenticationFilter"
 		 class="com.kibou.passport.cas.filter.CompositeAuthenticationFilter" />
 	
