@@ -16,10 +16,8 @@
 
 	<context:property-placeholder location="classpath:cas-passport.properties" />
 	
-	<!-- 这个好像无能为力了,加在web-fragement里吧 或者使用者在web.xml加上
-		<listener>
-			<listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
-		</listener>
+	<!-- listener好像无能为力了,加在web-fragement里吧 或者使用者在web.xml加上
+		org.jasig.cas.client.session.SingleSignOutHttpSessionListener 
 	-->
 	
 	<bean id="abstractCASFilter" class="com.kibou.passport.cas.filter.DefaultCasFilter" abstract="true"/>
@@ -28,9 +26,13 @@
 		 p:order="1100" p:filterClass="org.jasig.cas.client.session.SingleSignOutFilter"
 		 p:initParameters-ref="casPassportProperties" />
 	
+	<bean id="preFilterTicketHandler"
+		class="com.kibou.passport.cas.filter.support.CasSSOClusterAuthenticationPreFilter"
+		p:cookieName="${passport.ssoCluster.cookieName:MUSS}"
+	 />
 	
-	<bean id="authenticationPreFilter" parent="abstractCASFilter"
-		p:order="1100" p:filterClass="com.kibou.passport.cas.filter.support.CasSSOClusterAuthenticationPreFilter"
+	<bean id="authenticationPreFilter" name="" parent="abstractCASFilter"
+		p:order="1100" p:filterInstance-ref="preFilterTicketHandler"
 		p:initParameters-ref="casPassportProperties"
 	 />
 	

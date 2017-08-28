@@ -17,6 +17,17 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
@@ -36,6 +47,20 @@
 				</configuration>
 			</plugin>
 			<plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-source-plugin</artifactId>
+	            <version>3.0.1</version>
+	            <executions>
+	                <execution>
+	                    <id>attach-sources</id>
+	                    <goals>
+	                        <goal>jar-no-fork</goal>
+	                        <goal>test-jar-no-fork</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
+	        </plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
@@ -50,7 +75,7 @@
 					<!-- exclude in resource pharse -->
 					<warSourceExcludes>WEB-INF/web-*.xml</warSourceExcludes>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
-					<webXml>${webAppDescriptor}</webXml>
+					<webXml>src/main/webapp/WEB-INF/${webAppDescriptor}</webXml>
 					<archive>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
@@ -88,7 +113,13 @@
 		<profile>
 			<id>simple</id>
 			<properties>
-				<webAppDescriptor>${project.basedir}/src/main/webapp/WEB-INF/web-simple.xml</webAppDescriptor>
+				<webAppDescriptor>web-simple.xml</webAppDescriptor>
+			</properties>
+		</profile>
+		<profile>
+			<id>servlet2</id>
+			<properties>
+				<webAppDescriptor>web-servlet2.xml</webAppDescriptor>
 			</properties>
 		</profile>
 		<profile>
@@ -97,7 +128,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<webAppDescriptor>${project.basedir}/src/main/webapp/WEB-INF/web-security.xml</webAppDescriptor>
+				<webAppDescriptor>web-security.xml</webAppDescriptor>
 			</properties>
 		</profile>
 	</profiles>

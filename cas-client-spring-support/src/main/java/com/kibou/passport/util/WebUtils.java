@@ -1,5 +1,6 @@
 package com.kibou.passport.util;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 public class WebUtils {
@@ -39,4 +40,16 @@ public class WebUtils {
 		//Accept:Accept:text/javascript, application/javascript, application/ecmascript, application/x-ecmascript...
 	    return "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));  
 	}  
+	
+	public static Cookie getCookie(HttpServletRequest request, String cookieName) {
+		Cookie[] cookies = request.getCookies();
+		if(cookies != null && cookies.length > 0) {
+			for(Cookie cookie : cookies) {
+				if(cookie.getName().equals(cookieName)) {
+					return cookie;
+				}
+			}
+		}
+		return null;
+	}
 }

@@ -1,5 +1,7 @@
 package com.kibou.passport.cas.filter;
 
+import java.util.List;
+
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -10,30 +12,29 @@ import com.kibou.passport.cas.filter.support.AbstractServerBasedCompositeCasFilt
 import com.kibou.passport.cas.filter.support.Cas30TicketValidationFilterSupport;
 import com.kibou.passport.cas.handler.TicketValidationHandler;
 
-public class CompositeCas30TicketValidationFilter 
-				extends AbstractServerBasedCompositeCasFilter<AbstractTicketValidationFilter>{ 
+public class CompositeCas30TicketValidationFilter
+		extends AbstractServerBasedCompositeCasFilter<AbstractTicketValidationFilter> {
 
-	private TicketValidationHandler ticketValidationHandler;
-	
-	public void setTicketValidationHandler(TicketValidationHandler ticketValidationHandler) {
-		this.ticketValidationHandler = ticketValidationHandler;
+	private List<TicketValidationHandler> ticketValidationHandlers;
+
+	public void setTicketValidationHandlers(List<TicketValidationHandler> ticketValidationHandlers) {
+		this.ticketValidationHandlers = ticketValidationHandlers;
+		System.out.println("@@@@@@@@ ticketValidationHandlers size :" + 
+				(ticketValidationHandlers == null ? 0 : ticketValidationHandlers.size()) + " @@@@@@@@");
 	}
-
+	
 	@Override
-	protected AbstractTicketValidationFilter createInnerFilter(String serverName, FilterConfig config, ServletRequest request)
-			throws ServletException {
-		
+	protected AbstractTicketValidationFilter createInnerFilter(String serverName, FilterConfig config,
+			ServletRequest request) throws ServletException {
+
 		Cas30TicketValidationFilterSupport ticketValidationFilter = 
-				new Cas30TicketValidationFilterSupport(serverName,config);
-		
-		ticketValidationFilter.setTicketValidationHandler(ticketValidationHandler);
-		
+				new Cas30TicketValidationFilterSupport(serverName, config);
+
+		ticketValidationFilter.setTicketValidationHandlers(ticketValidationHandlers);
+
 		ticketValidationFilter.init(config);
-		
+
 		return ticketValidationFilter;
 	}
-	
-	
-}
 
- 
+}

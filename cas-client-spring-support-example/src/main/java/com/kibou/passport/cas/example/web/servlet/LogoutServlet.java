@@ -1,4 +1,4 @@
-package com.kibou.cas.example.web.servlet;
+package com.kibou.passport.cas.example.web.servlet;
 
 import java.io.IOException;
 import java.net.URLEncoder;

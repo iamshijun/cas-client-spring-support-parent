@@ -1,4 +1,4 @@
-package com.kibou.cas.example.web.filter;
+package com.kibou.passport.cas.example.web.filter;
 
 import java.io.IOException;
 

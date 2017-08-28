@@ -20,7 +20,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<jackson.version>1.9.7</jackson.version>
-		<spring.version>4.2.3.RELEASE</spring.version>
+		<spring.version>4.3.6.RELEASE</spring.version>
+		<spring.data.redis.version>1.8.0.RELEASE</spring.data.redis.version>
 		<slf4j.version>1.7.1</slf4j.version>
 		<cas.version>3.4.1</cas.version>
 	</properties>
@@ -51,6 +52,13 @@
 				<artifactId>spring-test</artifactId>
 				<version>${spring.version}</version>
 				<scope>test</scope>
+			</dependency>
+			
+			<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis -->
+			<dependency>
+			    <groupId>org.springframework.data</groupId>
+			    <artifactId>spring-data-redis</artifactId>
+			    <version>${spring.data.redis.version}</version>
 			</dependency>
 
 			<dependency>

@@ -63,7 +63,7 @@ public abstract class AbstractCompositeCasFilter<K,T extends Filter> implements 
 	}
 	
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
+	public final void init(FilterConfig filterConfig) throws ServletException {
 		this.filterConfig = filterConfig;
 		
 		initInternal(filterConfig);

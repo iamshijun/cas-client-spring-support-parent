@@ -1,4 +1,4 @@
-package com.kibou.cas.example.web;
+package com.kibou.passport.cas.example.web;
 
 public class PropertyUtils {
 

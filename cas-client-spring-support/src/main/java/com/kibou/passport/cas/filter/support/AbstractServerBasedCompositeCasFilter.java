@@ -23,7 +23,8 @@ public abstract class AbstractServerBasedCompositeCasFilter<T extends Filter> ex
 	protected void doInternalFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws IOException, ServletException {
 
-		this.getInnerFilter(request, WebUtils.getBasePath(request)).doFilter(request, response, filterChain);
+		this.getInnerFilter(request, WebUtils.getBasePath(request))
+				.doFilter(request, response, filterChain);
 
 	}
 

@@ -10,7 +10,11 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath*:/META-INF/cas-passport-*.xml</param-value>
+		<param-value>
+			classpath*:/META-INF/cas-passport-*.xml
+			classpath:spring/cas-passport.xml
+			classpath:spring/cas-passport-*.xml
+		</param-value>
 	</context-param>
 
 	<filter> <!-- targetBeanName not specified and it will find the filter bean named  'securityFilterChain' -->
@@ -25,7 +29,7 @@
 	
 	<filter>
 		<filter-name>securityFilter</filter-name>
-		<filter-class>com.kibou.cas.example.web.filter.SecurityFilter</filter-class>
+		<filter-class>com.kibou.passport.cas.example.web.filter.SecurityFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>securityFilter</filter-name>
@@ -33,4 +37,8 @@
 	</filter-mapping>
 	
 	<welcome-file-list>/index.jsp</welcome-file-list>
+	
+	<session-config>
+    	 <tracking-mode>COOKIE</tracking-mode>
+	</session-config>
 </web-app>
