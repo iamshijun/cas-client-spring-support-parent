@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.kibou</groupId>
 		<artifactId>cas-client-spring-support-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>cas-client-spring-support-example</artifactId>
 	<packaging>war</packaging>

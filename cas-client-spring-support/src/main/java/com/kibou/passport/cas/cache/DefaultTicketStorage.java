@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -34,7 +35,7 @@ public class DefaultTicketStorage implements TicketStorage{
 		File ticketFile = new File(tmpDirectory,getTicketFileName(key));
 		if(Files.exists(ticketFile.toPath())) {
 			try {
-				List<String> allLines = Files.readAllLines(ticketFile.toPath());
+				List<String> allLines = Files.readAllLines(ticketFile.toPath(),Charset.defaultCharset());
 				if(allLines.size() > 0) {
 					return allLines.get(0);
 				}

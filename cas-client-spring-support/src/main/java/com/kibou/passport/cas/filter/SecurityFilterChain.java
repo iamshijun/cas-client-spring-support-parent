@@ -115,7 +115,13 @@ public class SecurityFilterChain implements Filter, ApplicationListener<ContextR
 		String ignorePatternMatcherType = filterConfig.getInitParameter("ignorePatternMatcherType");
 		if(!StringUtils.isEmpty(ignorePatternMatcherType)) {
 			try {
-				this.setIgnorePatternMatcherType((Class)Class.forName(ignorePatternMatcherType));
+				
+				Class<?> matcherClazz = Class.forName(ignorePatternMatcherType);
+				if(PatternMatcher.class.isAssignableFrom(matcherClazz)){
+					this.setIgnorePatternMatcherType((Class)matcherClazz);
+				}else {
+					logger.warn("Ignore type :" + ignorePatternMatcherType + "cause it's not a PatternMatcher type");
+				}
 			} catch (ClassNotFoundException e) {
 				logger.warn("Cannot find the PatternMatcher specified with 'ignorePatternMatcherType' in web.xml");
 			}

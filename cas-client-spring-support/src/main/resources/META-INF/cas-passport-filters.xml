@@ -11,12 +11,14 @@
 	http://www.springframework.org/schema/util 
 	http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<util:properties id="casPassportProperties" 
-		location="${cas-passport.properties.config.location:classpath:cas-passport.properties}"/>
+	<!-- 改由使用者提供 -->
+	<!-- <util:properties id="casPassportProperties" 
+		location="${cas-passport.properties.config.location:classpath:cas-passport.properties}"/> -->
 
-	<context:property-placeholder location="classpath:cas-passport.properties" />
+ 	<!-- spring 中多个 PropertyPlaceHolderConfigurer存在会出现问题!(使用context命名空间的也是会创建一个) -->
+	<!-- <context:property-placeholder properties-ref="casPassportProperties" /> -->
 	
-	<!-- listener好像无能为力了,加在web-fragement里吧 或者使用者在web.xml加上
+	<!-- listener好像无能为力了,现加在web-fragement里吧 或者如果是servlet2.X的使用者需要手动在web.xml加上
 		org.jasig.cas.client.session.SingleSignOutHttpSessionListener 
 	-->
 	

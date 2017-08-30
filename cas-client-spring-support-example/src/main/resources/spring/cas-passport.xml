@@ -14,8 +14,12 @@
 
 	<!-- <alias name="defaultTicketStorage" alias="ticketStorage" /> -->
 
-
-	<context:component-scan base-package="com.kibou."></context:component-scan>
+	<util:properties id="casPassportProperties" 
+		location="${cas-passport.properties.config.location:classpath:cas-passport.properties}"/>
+		
+	<context:property-placeholder properties-ref="casPassportProperties"/>
+	
+	<import resource="classpath*:/META-INF/cas-passport-*.xml"/>
 
 	<bean id="jedisConnFactory"
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
