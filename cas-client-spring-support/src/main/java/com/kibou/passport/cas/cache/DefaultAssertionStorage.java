@@ -1,55 +1,66 @@
 package com.kibou.passport.cas.cache;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.List;
 
+import org.jasig.cas.client.validation.Assertion;
 import org.springframework.stereotype.Component;
 
-@Component("defaultTicketStorage")
-public class DefaultTicketStorage implements TicketStorage{
+import com.kibou.passport.serializer.JdkObjectSerializer;
+import com.kibou.passport.serializer.ObjectSerializer;
 
-	private String keyPrefix = "cas_ticket_";
+@Component("defaultTicketStorage")
+public class DefaultAssertionStorage implements AssertionStorage{
+
+	private String keyPrefix = "cas_assertion_";
+	
+	private ObjectSerializer<Object> serializer;
+	
+	public void setSerializer(ObjectSerializer<Object> serializer) {
+		this.serializer = serializer;
+	}
 	
 	private File tmpDirectory;
 	
-	public DefaultTicketStorage() {
+	public DefaultAssertionStorage() {
 		String tmpDir = System.getProperty("java.io.tmpdir");
 		tmpDirectory = new File(tmpDir);
+		serializer = new JdkObjectSerializer();
 	}
 	
-	private String getTicketFileName(String key) {
+	private String getStoreFileName(String key) {
 		return keyPrefix + key;
 	}
 	
 	@Override
-	public String get(String key) {
-		File ticketFile = new File(tmpDirectory,getTicketFileName(key));
+	public Assertion get(String key) {
+		File ticketFile = new File(tmpDirectory,getStoreFileName(key));
 		if(Files.exists(ticketFile.toPath())) {
-			try {
-				List<String> allLines = Files.readAllLines(ticketFile.toPath(),Charset.defaultCharset());
-				if(allLines.size() > 0) {
-					return allLines.get(0);
-				}
+			try(FileInputStream fis = new FileInputStream(ticketFile);){
+				
+				byte[] buffer = new byte[fis.available()];
+				fis.read(buffer);
+				
+				return (Assertion) serializer.deserialize(buffer);
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		}
 		return null;
 	}
 	
 	@Override
-	public void put(String key, String value) {
+	public void put(String key, Assertion assertion) {
 		
-		Path ticketFilePath = new File(tmpDirectory,getTicketFileName(key)).toPath();
+		Path ticketFilePath = new File(tmpDirectory,getStoreFileName(key)).toPath();
 		
 		//create if not exists and lock when we do write op
 		if(!Files.exists(ticketFilePath)) {
@@ -65,7 +76,9 @@ public class DefaultTicketStorage implements TicketStorage{
 		try(FileChannel fileChannel = FileChannel.open(ticketFilePath, StandardOpenOption.WRITE/*, StandardOpenOption.APPEND*/);) {
 			FileLock lock = fileChannel.lock();
 			
-			ByteBuffer byteBuffer = ByteBuffer.wrap(value.getBytes());
+			byte[] serialize = serializer.serialize(assertion);
+			
+			ByteBuffer byteBuffer = ByteBuffer.wrap(serialize);
 			
 			fileChannel.write(byteBuffer);
 			

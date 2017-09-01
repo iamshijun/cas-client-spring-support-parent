@@ -16,14 +16,13 @@ import javax.servlet.http.HttpSession;
 
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
-import org.jasig.cas.client.validation.AssertionImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.Base64Utils;
 
-import com.kibou.passport.cas.cache.TicketStorage;
+import com.kibou.passport.cas.cache.AssertionStorage;
 import com.kibou.passport.cas.handler.TicketValidationHandler;
 import com.kibou.passport.util.CasClientUtils;
 import com.kibou.passport.util.WebUtils;
@@ -45,7 +44,7 @@ public class CasSSOClusterAuthenticationPreFilter implements Filter, TicketValid
 	
 	private boolean preFilterSwitchOn = true;//on
 	
-	private TicketStorage ticketStorage;//
+	private AssertionStorage assertionStorage;//
 	
 	//private CipherExecutor(cas-server)
 
@@ -63,15 +62,15 @@ public class CasSSOClusterAuthenticationPreFilter implements Filter, TicketValid
 	
 	private boolean isPreFilterEnabled() {
 		if(preFilterSwitchOn) {
-			return ticketStorage != null;
+			return assertionStorage != null;
 		}
 		return false;
 	}
 
 	@Autowired (required=false)
-	@Qualifier("ticketStorage")
-	public void setTicketStorage(TicketStorage ticketStorage) {
-		this.ticketStorage = ticketStorage;
+	@Qualifier("assertionStorage")
+	public void setAssertionStorage(AssertionStorage assertionStorage) {
+		this.assertionStorage = assertionStorage;
 	}
 
 	@Override
@@ -90,13 +89,15 @@ public class CasSSOClusterAuthenticationPreFilter implements Filter, TicketValid
 			logger.debug("Request URL : " + request.getRequestURL());
 			Cookie cookie = WebUtils.getCookie(request, cookieName);
 			if (cookie != null) {
-				//1. get MUSS and  validate(TODO) ...
 				String cipher = cookie.getValue();
+				//validate(TODO) ...
 				
-				String principal = ticketStorage.get(cipher);
-				// 2. Create Assertion instance and add to session/request's attribute
-				if (principal != null) {
-					createAssertion(request, principal);
+				Assertion storedAssertion = assertionStorage.get(cipher);
+				
+				if(storedAssertion != null) {
+					logger.debug("=====" + "Found cipher and read assertion object from storage" + "=====");
+					
+					putAssertionIntoConversation(request, storedAssertion);
 				}
 			}
 		}
@@ -105,12 +106,7 @@ public class CasSSOClusterAuthenticationPreFilter implements Filter, TicketValid
 		return;
 	}
 
-	private void createAssertion(HttpServletRequest request, String principal) {
-		
-		logger.debug("=====" + "Found cipher and create a artifact assertion object" + "=====");
-		
-		// <= fixme
-		AssertionImpl assertion = new AssertionImpl(principal);
+	protected void putAssertionIntoConversation(HttpServletRequest request,Assertion assertion ){
 		
 		//create session immediately if it is not a ajax request?
 		HttpSession session = request.getSession(WebUtils.isAjaxRequest(request) ? false : true);
@@ -132,7 +128,7 @@ public class CasSSOClusterAuthenticationPreFilter implements Filter, TicketValid
 		if(isPreFilterEnabled()) {
 			//自定义的客户端用的 ticket/token/cipher 密串
 			String cipher = Base64Utils.encodeToString(UUID.randomUUID().toString().getBytes());
-			ticketStorage.put(cipher, assertion.getPrincipal().getName());//上面的createAssertion需要配合 知道这里存储的对象类型! 
+			assertionStorage.put(cipher, assertion);//上面的createAssertion需要配合 知道这里存储的对象类型! 
 			
 			Cookie cookie = new Cookie(cookieName, cipher);
 			cookie.setHttpOnly(true);

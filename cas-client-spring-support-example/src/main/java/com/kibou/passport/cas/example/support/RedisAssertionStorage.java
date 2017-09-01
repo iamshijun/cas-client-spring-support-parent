@@ -2,15 +2,15 @@ package com.kibou.passport.cas.example.support;
 
 import javax.annotation.Resource;
 
+import org.jasig.cas.client.validation.Assertion;
 import org.springframework.data.redis.core.HashOperations;
 
-import com.kibou.passport.cas.cache.TicketStorage;
+import com.kibou.passport.cas.cache.AssertionStorage;
 
-//@Component("redisTicketStorage")
-public class RedisTicketStorage implements TicketStorage{
-
+public class RedisAssertionStorage implements AssertionStorage{
+	
 	@Resource(name = "redisTemplate")
-	private HashOperations<String, String, String> hashOperation;
+	private HashOperations<String, String, Assertion> hashOperation;
 	
 	private String cacheKey = "cas_ticket";
 	
@@ -19,12 +19,12 @@ public class RedisTicketStorage implements TicketStorage{
 	}
 	
 	@Override
-	public String get(String key) {
+	public Assertion get(String key) {
 		return hashOperation.get(cacheKey, key);
 	}
 
 	@Override
-	public void put(String key, String value) {
+	public void put(String key, Assertion value) {
 		hashOperation.put(cacheKey, key, value);
 	}
 

@@ -36,9 +36,9 @@
 		</property>
 	</bean>
 
-	<bean id="redisTicketStorage"  class="com.kibou.passport.cas.example.support.RedisTicketStorage" />
+	<bean id="redisAssertionStorage"  class="com.kibou.passport.cas.example.support.RedisAssertionStorage" />
 
-	<alias name="redisTicketStorage" alias="ticketStorage" />
+	<alias name="redisAssertionStorage" alias="assertionStorage" />
 
 </beans>
 
