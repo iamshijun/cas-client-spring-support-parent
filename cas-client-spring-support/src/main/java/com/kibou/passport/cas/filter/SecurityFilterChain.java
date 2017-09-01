@@ -129,6 +129,8 @@ public class SecurityFilterChain implements Filter, ApplicationListener<ContextR
 	}
 	
 	public void setIgnorePatternMatcherType(Class<? extends PatternMatcher> ignorePatternMatcherType) {
+		if(ignorePatternMatcherType == null)
+			return;
 		try {
 			patternMatcher = BeanUtils.instantiate(ignorePatternMatcherType);
 		} catch (BeanInstantiationException e) {

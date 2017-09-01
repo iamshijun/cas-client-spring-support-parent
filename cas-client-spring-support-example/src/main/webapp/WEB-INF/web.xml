@@ -11,8 +11,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:spring/cas-passport.xml
-			classpath:spring/cas-passport-*.xml
+			classpath:spring/cas-passport*.xml
 		</param-value>
 	</context-param>
 

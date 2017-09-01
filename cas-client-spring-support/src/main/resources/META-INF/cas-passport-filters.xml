@@ -11,16 +11,14 @@
 	http://www.springframework.org/schema/util 
 	http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<!-- 改由使用者提供 -->
-	<!-- <util:properties id="casPassportProperties" 
-		location="${cas-passport.properties.config.location:classpath:cas-passport.properties}"/> -->
-
- 	<!-- spring 中多个 PropertyPlaceHolderConfigurer存在会出现问题!(使用context命名空间的也是会创建一个) -->
-	<!-- <context:property-placeholder properties-ref="casPassportProperties" /> -->
+	<context:component-scan base-package="com.kibou.passport" />
 	
-	<!-- listener好像无能为力了,现加在web-fragement里吧 或者如果是servlet2.X的使用者需要手动在web.xml加上
-		org.jasig.cas.client.session.SingleSignOutHttpSessionListener 
-	-->
+<!-- 	<alias name="defaultTicketStorage" alias="ticketStorage" /> -->
+
+	<!-- <util:properties id="casPassportProperties" 
+		location="${cas-passport.properties.config.location:classpath:cas-passport.properties}"/>
+
+	<context:property-placeholder order="1" properties-ref="casPassportProperties" /> -->
 	
 	<bean id="abstractCASFilter" class="com.kibou.passport.cas.filter.DefaultCasFilter" abstract="true"/>
 
@@ -30,7 +28,7 @@
 	
 	<bean id="preFilterTicketHandler"
 		class="com.kibou.passport.cas.filter.support.CasSSOClusterAuthenticationPreFilter"
-		p:cookieName="${passport.ssoCluster.cookieName:MUSS}"
+		p:cookieName="#{casPassportProperties['passport.ssoCluster.cookieName'] ?: 'MUSS'}"
 	 />
 	
 	<bean id="authenticationPreFilter" name="" parent="abstractCASFilter"
@@ -52,10 +50,8 @@
 		p:order="1300" p:filterInstance-ref="compositeTicketValidator" p:initParameters-ref="casPassportProperties">
 		<!-- <property name="initParameters">
 			<props>
-				<prop key="casServerUrlPrefix">${passport.ticketValidationFilter.casServerUrlPrefix}
-				</prop>
-				<prop key="ignorePattern">${passport.ticketValidationFilter.ignorePattern}
-				</prop>
+				<prop key="casServerUrlPrefix">${passport.ticketValidationFilter.casServerUrlPrefix}</prop>
+				<prop key="ignorePattern">${passport.ticketValidationFilter.ignorePattern}</prop>
 			</props>
 		</property>-->
  	</bean>
@@ -66,8 +62,13 @@
 	<bean id="assertionThreadLocalFilter" parent="abstractCASFilter" 
 		p:order="1500" p:filterClass="org.jasig.cas.client.util.AssertionThreadLocalFilter" />
 	
-	<bean id="securityFilterChain" class="com.kibou.passport.cas.filter.SecurityFilterChain" 
+	<!-- <bean id="securityFilterChain" class="com.kibou.passport.cas.filter.SecurityFilterChain" 
 		p:ignorePattern="${passport.security.ignorePattern:}"
+		p:ignorePatternMatcherType="${passport.security.ignorePatternMatcherType:#{null}}"
+	/> -->
+	<bean id="securityFilterChain" class="com.kibou.passport.cas.filter.SecurityFilterChain" 
+		p:ignorePattern="#{casPassportProperties['passport.security.ignorePattern']}"
+		p:ignorePatternMatcherType="#{casPassportProperties['passport.security.ignorePatternMatcherType'] ?: null}"
 	/>
 	
 </beans>
