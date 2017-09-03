@@ -1,6 +1,7 @@
 package com.kibou.passport.cas.filter.support;
 
 import java.io.IOException;
+import java.security.MessageDigest;
 import java.util.UUID;
 
 import javax.servlet.Filter;
@@ -38,35 +39,26 @@ import com.kibou.passport.util.WebUtils;
  */
 public class CasSSOClusterAuthenticationPreFilter implements Filter, TicketValidationHandler{
 	
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private final static Logger LOGGER = LoggerFactory.getLogger(CasSSOClusterAuthenticationPreFilter.class);
 	
-	private String cookieName = "MUSS";
+	private String cookieName = "KUSS";
 	
-	private boolean preFilterSwitchOn = true;//on
+	private boolean switchOn = true;//on
 	
 	private AssertionStorage assertionStorage;//
 	
-	//private CipherExecutor(cas-server)
+	private String logoutUrl = "/logout"; 
+	
+	private boolean cookieSecurity = false;
+	
+	//private String cookiePath = "/" ;
+	
+	//private CipherExecutor(see : cas-server)
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 	}
 	
-	public void setCookieName(String cookieName) {
-		this.cookieName = cookieName;
-	}
-	
-	public void setPreFilterSwitchOn(boolean preFilterSwitchOn) {
-		this.preFilterSwitchOn = preFilterSwitchOn;
-	}
-	
-	private boolean isPreFilterEnabled() {
-		if(preFilterSwitchOn) {
-			return assertionStorage != null;
-		}
-		return false;
-	}
-
 	@Autowired (required=false)
 	@Qualifier("assertionStorage")
 	public void setAssertionStorage(AssertionStorage assertionStorage) {
@@ -81,21 +73,33 @@ public class CasSSOClusterAuthenticationPreFilter implements Filter, TicketValid
 			chain.doFilter(req, resp);
 			return;
 		}
-
+		
 		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) resp;
+		
+		if(request.getRequestURL().toString().contains(logoutUrl)) {
+			Cookie cookie = new Cookie(cookieName, "");
+			cookie.setPath(request.getContextPath() + "/");
+			cookie.setMaxAge(0);
+			response.addCookie(cookie);
+		}
+		
 		final Assertion assertion = CasClientUtils.getAssertion(request);
 		
 		if (assertion == null) {
-			logger.debug("Request URL : " + request.getRequestURL());
+			
+			LOGGER.debug("Request URL : " + request.getRequestURL());
+			
 			Cookie cookie = WebUtils.getCookie(request, cookieName);
 			if (cookie != null) {
-				String cipher = cookie.getValue();
-				//validate(TODO) ...
+				
+				String cipher = cookie.getValue(); //validate(TODO) ...
+				LOGGER.debug("=====Found sso cookie " + cipher + "=====");
 				
 				Assertion storedAssertion = assertionStorage.get(cipher);
 				
 				if(storedAssertion != null) {
-					logger.debug("=====" + "Found cipher and read assertion object from storage" + "=====");
+					LOGGER.debug("=====" + "Found shared assertion object from storage" + "=====");
 					
 					putAssertionIntoConversation(request, storedAssertion);
 				}
@@ -126,16 +130,24 @@ public class CasSSOClusterAuthenticationPreFilter implements Filter, TicketValid
 	@Override
 	public void onSuccessfulValidation(HttpServletRequest request, HttpServletResponse response, Assertion assertion) {
 		if(isPreFilterEnabled()) {
-			//自定义的客户端用的 ticket/token/cipher 密串
-			String cipher = Base64Utils.encodeToString(UUID.randomUUID().toString().getBytes());
+			//自定义的客户端用的 ticket/token/cipher 密串,这里没有安全问题?单纯的使用一个UUID作为key
+			@SuppressWarnings("restriction")
+			String cipher = new sun.misc.BASE64Encoder().encode(UUID.randomUUID().toString().getBytes());
+			//String cipher = Base64Utils.encodeToString(UUID.randomUUID().toString().getBytes());
+			
 			assertionStorage.put(cipher, assertion);//上面的createAssertion需要配合 知道这里存储的对象类型! 
 			
 			Cookie cookie = new Cookie(cookieName, cipher);
 			cookie.setHttpOnly(true);
-			//cookie.setDomain(domain);
+			//cookie.setDomain(request.getHost());
 			cookie.setPath(request.getContextPath() + "/");
-			//cookie.setSecure(true);
+			if(cookieSecurity) {
+				cookie.setSecure(true);
+			}
+			
 			response.addCookie(cookie);
+			
+			LOGGER.debug("add sso cookie to " + request.getContextPath());
 		}
 		
 	}
@@ -143,6 +155,30 @@ public class CasSSOClusterAuthenticationPreFilter implements Filter, TicketValid
 	@Override
 	public void onFailedValidation(HttpServletRequest request, HttpServletResponse response) {
 		
+	}
+	
+	public void setCookieSecurity(boolean cookieSecurity) {
+		this.cookieSecurity = cookieSecurity;
+	}
+	
+	//set logoutUrl pattern
+	public void setLogoutUrl(String logoutUrl) {
+		this.logoutUrl = logoutUrl;
+	}
+	
+	public void setCookieName(String cookieName) {
+		this.cookieName = cookieName;
+	}
+	
+	public void setSwitchOn(boolean switchOn) {
+		this.switchOn = switchOn;
+	}
+	
+	private boolean isPreFilterEnabled() {
+		if(switchOn) {
+			return assertionStorage != null;
+		}
+		return false;
 	}
 
 }

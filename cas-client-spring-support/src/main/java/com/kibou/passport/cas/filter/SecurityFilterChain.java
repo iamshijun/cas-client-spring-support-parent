@@ -106,7 +106,7 @@ public class SecurityFilterChain implements Filter, ApplicationListener<ContextR
 			filter.init(filterConfig);
 		}*/
 		
-		//ps:init方法的执行在创建当前bean(真个lifecycle)之后,当前逻辑是web.xml中的配置优先于在spring容器中的配置
+		//ps:init方法的执行在创建当前bean周期(lifecycle)之后,当前逻辑是web.xml中的配置优先于在spring容器中的配置
 		String ignorePattern = filterConfig.getInitParameter("ignorePattern");
 		if(!StringUtils.isEmpty(ignorePattern)) {
 			this.setIgnorePattern(ignorePattern);;

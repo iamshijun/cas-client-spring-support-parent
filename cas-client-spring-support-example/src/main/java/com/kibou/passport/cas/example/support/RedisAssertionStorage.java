@@ -12,7 +12,7 @@ public class RedisAssertionStorage implements AssertionStorage{
 	@Resource(name = "redisTemplate")
 	private HashOperations<String, String, Assertion> hashOperation;
 	
-	private String cacheKey = "cas_ticket";
+	private String cacheKey = "cas_assertion";
 	
 	public void setCacheKey(String cacheKey) {
 		this.cacheKey = cacheKey;
