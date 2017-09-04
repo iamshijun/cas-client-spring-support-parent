@@ -26,6 +26,10 @@ import com.kibou.passport.util.PatternMatcher;
 import com.kibou.passport.util.ServletPathMatcher;
 
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class SecurityFilterChain implements Filter, ApplicationListener<ContextRefreshedEvent> {
 
 	private List<CasFilter> casFilters;

@@ -10,6 +10,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 //2.--实现方式2 使用HandlerType + Tomcat的SPI(META-INF/services/javax.servlet.ServletContainerInitializer)提供
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class DefaultCASFilterInitializer implements CASFilterInitializer {
 
 	@Override

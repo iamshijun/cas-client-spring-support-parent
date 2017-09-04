@@ -13,6 +13,10 @@ import org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter
 import com.kibou.passport.cas.handler.TicketValidationHandler;
 import com.kibou.passport.util.CollectionUtils;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class Cas30TicketValidationFilterSupport extends Cas30ProxyReceivingTicketValidationFilter {
 
 	private List<TicketValidationHandler> ticketValidationHandlers;

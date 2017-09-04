@@ -21,6 +21,10 @@ import org.jasig.cas.client.util.CasClients;
 
 import com.kibou.passport.cas.handler.TicketValidationHandler;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 @Deprecated
 public class DelegatingTicketValidationFilter extends AbstractTicketValidationFilter{
 	

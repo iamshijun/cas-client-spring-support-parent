@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 @WebServlet(name="testServlet",urlPatterns="/test")
 public class TestServlet extends HttpServlet{
 	

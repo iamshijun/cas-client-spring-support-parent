@@ -9,6 +9,10 @@ import org.jasig.cas.client.authentication.AuthenticationRedirectStrategy;
 
 import com.kibou.passport.util.WebUtils;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class AjaxAwareAuthenticationRedirectStrategy implements AuthenticationRedirectStrategy {
 
 	private String ajaxResponse = "needLogin";

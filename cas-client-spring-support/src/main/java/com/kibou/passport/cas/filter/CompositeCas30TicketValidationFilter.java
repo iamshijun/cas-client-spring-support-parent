@@ -12,6 +12,10 @@ import com.kibou.passport.cas.filter.support.AbstractServerBasedCompositeCasFilt
 import com.kibou.passport.cas.filter.support.Cas30TicketValidationFilterSupport;
 import com.kibou.passport.cas.handler.TicketValidationHandler;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class CompositeCas30TicketValidationFilter
 		extends AbstractServerBasedCompositeCasFilter<AbstractTicketValidationFilter> {
 

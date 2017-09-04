@@ -12,6 +12,10 @@ import javax.servlet.http.HttpSession;
 
 import com.kibou.passport.util.WebUtils;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 @WebServlet(name = "logoutServlet" , urlPatterns ="/logout")
 public class LogoutServlet extends HttpServlet{
 	

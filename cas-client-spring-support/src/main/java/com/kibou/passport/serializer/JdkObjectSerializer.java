@@ -8,6 +8,10 @@ import java.io.ObjectOutputStream;
 
 import com.kibou.passport.exception.SerializationException;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class JdkObjectSerializer implements ObjectSerializer<Object> {
 
 	@Override

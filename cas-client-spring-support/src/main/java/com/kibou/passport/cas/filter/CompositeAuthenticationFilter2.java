@@ -9,6 +9,10 @@ import org.jasig.cas.client.authentication.DelegatingAuthenticationFilter;
 
 import com.kibou.passport.cas.filter.support.AbstractServerBasedCompositeCasFilter;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 @Deprecated
 public class CompositeAuthenticationFilter2 extends  AbstractServerBasedCompositeCasFilter<AuthenticationFilter> {
 	

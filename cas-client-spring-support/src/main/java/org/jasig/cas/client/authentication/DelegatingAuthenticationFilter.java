@@ -5,6 +5,10 @@ import javax.servlet.ServletException;
 
 import org.jasig.cas.client.configuration.ConfigurationKeys;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 @Deprecated
 public class DelegatingAuthenticationFilter extends AuthenticationFilter{
 	

@@ -1,5 +1,3 @@
-//licence?
-
 package com.kibou.passport.util;
 
 import java.io.IOException;
@@ -14,6 +12,10 @@ import java.util.concurrent.ConcurrentMap;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class CacheablePropertyLoaderUtils {
 	
 	private static ConcurrentMap<String, Properties> resourceNamePropertiesMap = new ConcurrentHashMap<>();

@@ -1,7 +1,6 @@
 package com.kibou.passport.cas.filter.support;
 
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.util.UUID;
 
 import javax.servlet.Filter;
@@ -21,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.util.Base64Utils;
 
 import com.kibou.passport.cas.cache.AssertionStorage;
 import com.kibou.passport.cas.handler.TicketValidationHandler;
@@ -32,7 +30,9 @@ import com.kibou.passport.util.WebUtils;
 /**
  * 在当前架构没有实现session同步的情况下使用该类来实现 一个service后面多个服务器之间的模拟登录(一台登录过 如果Load balancer转发到其他机器时会通过此filter检验出登录状态)
  * 配合自定义的TicketValidationFilter(成功登录后会在cookie存储一个标识,
- * 分布式缓存一个key/value=key同前面的cookie存储哦标识,value为Assertion的信息 用于在其他机器再将Assertion重新构造出来)
+ * 分布式缓存一个key/value=key同前面的cookie存储哦标识,value为Assertion的信息 用于在其他机器再将Assertion重新构造出来)<br>
+ * 
+ * 如需启用当前filter,需要指定AssertionStorage(name=assertionStorage)的具体实现
  * 
  * @author aimysaber@gmail.com
  *

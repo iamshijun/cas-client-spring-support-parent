@@ -9,6 +9,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class FilterDelegator implements Filter{
 	
 	public final Filter delegate;

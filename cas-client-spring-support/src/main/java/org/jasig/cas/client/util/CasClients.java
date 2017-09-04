@@ -4,6 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jasig.cas.client.Protocol;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 @Deprecated
 public abstract class CasClients {
 

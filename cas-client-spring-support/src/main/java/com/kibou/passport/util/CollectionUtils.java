@@ -2,6 +2,10 @@ package com.kibou.passport.util;
 
 import java.util.Collection;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class CollectionUtils {
 	
 	public static boolean isNotEmpty(Collection<?> coll) {

@@ -5,6 +5,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jasig.cas.client.validation.Assertion;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public interface TicketValidationHandler {
 
 	void onSuccessfulValidation(HttpServletRequest request, HttpServletResponse response, Assertion assertion);

@@ -5,6 +5,10 @@ import javax.servlet.ServletException;
 
 import org.jasig.cas.client.authentication.AuthenticationFilter;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class AuthenticationFilterSupport extends AuthenticationFilter {
 	
 	private String serverName;

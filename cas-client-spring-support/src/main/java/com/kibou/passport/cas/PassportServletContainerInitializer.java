@@ -10,6 +10,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HandlesTypes;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 @HandlesTypes(CASFilterInitializer.class)
 public class PassportServletContainerInitializer implements ServletContainerInitializer{
 

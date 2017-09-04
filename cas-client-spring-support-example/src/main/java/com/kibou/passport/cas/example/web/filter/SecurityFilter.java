@@ -15,6 +15,10 @@ import org.jasig.cas.client.validation.Assertion;
 
 import com.kibou.passport.util.CasClientUtils;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class SecurityFilter implements Filter {
 
 	@Override

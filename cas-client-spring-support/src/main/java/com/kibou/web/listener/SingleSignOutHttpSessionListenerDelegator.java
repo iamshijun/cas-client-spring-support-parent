@@ -11,6 +11,10 @@ import javax.servlet.http.HttpSessionListener;
  *
  */
 //@WebListener 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class SingleSignOutHttpSessionListenerDelegator implements HttpSessionListener{
 
 	private final org.jasig.cas.client.session.SingleSignOutHttpSessionListener delegator;

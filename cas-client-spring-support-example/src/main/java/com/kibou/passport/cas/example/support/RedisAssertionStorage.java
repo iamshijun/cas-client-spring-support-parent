@@ -7,6 +7,10 @@ import org.springframework.data.redis.core.HashOperations;
 
 import com.kibou.passport.cas.cache.AssertionStorage;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class RedisAssertionStorage implements AssertionStorage{
 	
 	@Resource(name = "redisTemplate")

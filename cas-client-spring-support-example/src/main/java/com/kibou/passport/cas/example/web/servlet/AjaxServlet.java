@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.jasig.cas.client.util.AssertionHolder;
 import org.jasig.cas.client.validation.Assertion;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 @WebServlet(name = "ajaxServlet" , urlPatterns = "/ajaxRequest")
 public class AjaxServlet extends HttpServlet{
 

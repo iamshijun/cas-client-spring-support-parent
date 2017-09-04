@@ -6,6 +6,10 @@ import javax.servlet.http.HttpSession;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public abstract class CasClientUtils {
 	private CasClientUtils() {}
 	

@@ -18,6 +18,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.context.ServletContextAware;
 
 //参考 ServletWrappingController
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class FilterWrapperBean
 		implements Filter, ServletContextAware, BeanNameAware, InitializingBean, DisposableBean {
 

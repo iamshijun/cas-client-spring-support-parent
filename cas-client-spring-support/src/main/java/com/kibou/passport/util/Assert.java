@@ -1,5 +1,9 @@
 package com.kibou.passport.util;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public abstract class Assert {
 	private Assert(){};
 	

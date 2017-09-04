@@ -10,7 +10,7 @@ import javax.servlet.ServletContext;
 
 /**
  * 可追加配置的FilterConfig(delegate)
- * @author SHISJ
+ * @author aimysaber@gmail.com
  *
  */
 public class AppendableFilterConfig implements FilterConfig{

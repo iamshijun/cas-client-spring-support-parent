@@ -10,6 +10,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 //spring也有同名(作用一样)的类,和CompositeFilter
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class VirtualFilterChain implements FilterChain {
 
 	private final List<? extends Filter> filters;

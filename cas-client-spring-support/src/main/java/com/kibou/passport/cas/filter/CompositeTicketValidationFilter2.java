@@ -11,6 +11,9 @@ import org.jasig.cas.client.validation.DelegatingTicketValidationFilter;
 import com.kibou.passport.cas.filter.support.AbstractServerBasedCompositeCasFilter;
 import com.kibou.passport.cas.handler.TicketValidationHandler;
 
+/**
+ * @author aimysaber@gmail.com
+ */
 @Deprecated
 public class CompositeTicketValidationFilter2 extends AbstractServerBasedCompositeCasFilter<AbstractTicketValidationFilter> { 
 	

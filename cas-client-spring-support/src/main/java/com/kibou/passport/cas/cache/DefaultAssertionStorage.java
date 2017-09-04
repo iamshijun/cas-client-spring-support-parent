@@ -17,6 +17,11 @@ import org.springframework.stereotype.Component;
 import com.kibou.passport.serializer.JdkObjectSerializer;
 import com.kibou.passport.serializer.ObjectSerializer;
 
+/**
+ * File based assertion storage
+ * @author aimysaber@gmail.com
+ *
+ */
 @Component("defaultTicketStorage")
 public class DefaultAssertionStorage implements AssertionStorage{
 

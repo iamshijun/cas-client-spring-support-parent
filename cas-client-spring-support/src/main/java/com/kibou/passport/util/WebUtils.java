@@ -3,6 +3,10 @@ package com.kibou.passport.util;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class WebUtils {
 	
 	public static String getBasePath(HttpServletRequest request){

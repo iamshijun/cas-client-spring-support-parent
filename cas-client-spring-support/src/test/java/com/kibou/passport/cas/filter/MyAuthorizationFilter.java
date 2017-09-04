@@ -8,6 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+/**
+ * @author aimysaber@gmail.com
+ *
+ */
 public class MyAuthorizationFilter implements AuthorizationFilter {
 
 	@Override
