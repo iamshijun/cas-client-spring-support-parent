@@ -29,7 +29,7 @@
 	
 	<filter>
 		<filter-name>securityFilter</filter-name>
-		<filter-class>com.kibou.passport.cas.example.web.filter.SecurityFilter</filter-class>
+		<filter-class>com.github.iamshijun.passport.cas.example.web.filter.SecurityFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>securityFilter</filter-name>

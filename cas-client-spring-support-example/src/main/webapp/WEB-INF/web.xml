@@ -27,14 +27,17 @@
 	
 	<filter>
 		<filter-name>securityFilter</filter-name>
-		<filter-class>com.kibou.passport.cas.example.web.filter.SecurityFilter</filter-class>
+		<filter-class>com.github.iamshijun.passport.cas.example.web.filter.SecurityFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>securityFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
-	<welcome-file-list>/index.jsp</welcome-file-list>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
 	
 	<session-config>
     	 <tracking-mode>COOKIE</tracking-mode>

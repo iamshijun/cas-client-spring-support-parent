@@ -19,7 +19,7 @@ import org.jasig.cas.client.Protocol;
 import org.jasig.cas.client.configuration.ConfigurationKeys;
 import org.jasig.cas.client.util.CasClients;
 
-import com.kibou.passport.cas.handler.TicketValidationHandler;
+import com.github.iamshijun.passport.cas.handler.TicketValidationHandler;
 
 /**
  * @author aimysaber@gmail.com

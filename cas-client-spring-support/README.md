@@ -21,5 +21,4 @@
 	2-1.  FilterWrapperBean 
 	类似spring的ServletWrappingController, 实际的行为有内部的Filter来执行, FilterConfig的配置由外部指定的Properties进行适配 .
 	
-	2-2.
 	

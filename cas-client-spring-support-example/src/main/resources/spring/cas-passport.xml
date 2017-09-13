@@ -36,9 +36,11 @@
 		</property>
 	</bean>
 
-	<bean id="redisAssertionStorage"  class="com.kibou.passport.cas.example.support.RedisAssertionStorage" />
+	<bean id="redisAssertionStorage"  class="com.github.iamshijun.passport.cas.example.support.RedisAssertionStorage" />
 
 	<alias name="redisAssertionStorage" alias="assertionStorage" />
+	
+	<bean class="com.github.iamshijun.passport.cas.example.util.BeanFactoryUtil" />
 
 </beans>
 

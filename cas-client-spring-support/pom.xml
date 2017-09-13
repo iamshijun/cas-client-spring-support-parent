@@ -5,7 +5,7 @@
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>com.kibou</groupId>
+		<groupId>com.github.iamshijun</groupId>
 		<artifactId>cas-client-spring-support-parent</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>

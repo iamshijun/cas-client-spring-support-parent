@@ -11,24 +11,29 @@
 	http://www.springframework.org/schema/util 
 	http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<context:component-scan base-package="com.kibou.passport" />
+	<context:component-scan base-package="com.github.iamshijun.passport" />
 	
 <!-- 	<alias name="defaultTicketStorage" alias="assertionStorage" /> -->
+
+	<!-- 这里可以指定配置 但是配置文件的名称就会定死,可以根据实际情况来
+	      如果对名称没有要求  可将这个配置注释解开,由组件本身提供一个默认的配置 . 另外如果不使用默认的配置
+	      使用者只需在类路径添加一个cas-passport.properties配置文件即可 无需再在容器中再声明一个id为"casPassportProperties"的bean
+	  -->
 
 	<!-- <util:properties id="casPassportProperties" 
 		location="${cas-passport.properties.config.location:classpath:cas-passport.properties}"/>
 
 	<context:property-placeholder order="1" properties-ref="casPassportProperties" /> -->
 	
-	<bean id="abstractCASFilter" class="com.kibou.passport.cas.filter.DefaultCasFilter" abstract="true"/>
+	<bean id="abstractCASFilter" class="com.github.iamshijun.passport.cas.filter.DefaultCasFilter" abstract="true"/>
 
 	<bean id="singleSignOutFilter" parent="abstractCASFilter"  
 		 p:order="1100" p:filterClass="org.jasig.cas.client.session.SingleSignOutFilter"
 		 p:initParameters-ref="casPassportProperties" />
 	
 	<bean id="preFilterTicketHandler"
-		class="com.kibou.passport.cas.filter.support.CasSSOClusterAuthenticationPreFilter"
-		p:cookieName="#{casPassportProperties['passport.ssoCluster.cookieName'] ?: 'MUSS'}"
+		class="com.github.iamshijun.passport.cas.filter.support.CasSSOClusterAuthenticationPreFilter"
+		p:cookieName="#{casPassportProperties['passport.ssoCluster.cookieName'] ?: 'KUSS'}"
 	 />
 	
 	<bean id="authenticationPreFilter" name="" parent="abstractCASFilter"
@@ -37,14 +42,14 @@
 	 />
 	
 	<bean id="compositeAuthenticationFilter"
-		 class="com.kibou.passport.cas.filter.CompositeAuthenticationFilter" />
+		 class="com.github.iamshijun.passport.cas.filter.CompositeAuthenticationFilter" />
 	
 	<bean id="authenticationFilter" parent="abstractCASFilter"
 	 	 p:order="1200" p:filterInstance-ref="compositeAuthenticationFilter"
 		 p:initParameters-ref="casPassportProperties" />
 	
 	<bean id="compositeTicketValidator" 
-		class="com.kibou.passport.cas.filter.CompositeCas30TicketValidationFilter" autowire="byType"/>
+		class="com.github.iamshijun.passport.cas.filter.CompositeCas30TicketValidationFilter" autowire="byType"/>
 	
 	<bean id="ticketValidationFilter" parent="abstractCASFilter"
 		p:order="1300" p:filterInstance-ref="compositeTicketValidator" p:initParameters-ref="casPassportProperties">
@@ -62,11 +67,19 @@
 	<bean id="assertionThreadLocalFilter" parent="abstractCASFilter" 
 		p:order="1500" p:filterClass="org.jasig.cas.client.util.AssertionThreadLocalFilter" />
 	
-	<!-- <bean id="securityFilterChain" class="com.kibou.passport.cas.filter.SecurityFilterChain" 
+	
+	<!-- 单一登录Fliter(单设备/单浏览器登录) -->	
+	<bean id="casSingleLoginFilter" parent="abstractCASFilter"
+		p:order="1600" p:filterClass="com.github.iamshijun.passport.cas.filter.CasSingleLoginFilter" p:initParameters-ref="casPassportProperties" />	
+	
+	<!-- <bean id="securityFilterChain" class="com.github.iamshijun.passport.cas.filter.SecurityFilterChain" 
 		p:ignorePattern="${passport.security.ignorePattern:}"
 		p:ignorePatternMatcherType="${passport.security.ignorePatternMatcherType:#{null}}"
 	/> -->
-	<bean id="securityFilterChain" class="com.kibou.passport.cas.filter.SecurityFilterChain" 
+	
+	
+	<!-- 总的filter调用链 将上述的CASFilter注入  -->
+	<bean id="securityFilterChain" class="com.github.iamshijun.passport.cas.filter.SecurityFilterChain" 
 		p:ignorePattern="#{casPassportProperties['passport.security.ignorePattern']}"
 		p:ignorePatternMatcherType="#{casPassportProperties['passport.security.ignorePatternMatcherType'] ?: null}"
 	/>
