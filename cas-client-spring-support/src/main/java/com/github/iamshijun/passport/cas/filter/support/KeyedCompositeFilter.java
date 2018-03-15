@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentMap;
  * @param <T>
  * @author aimysaber@gmail.com
  */
-public abstract class KeydCompositeFilter<K, T extends Filter> implements Filter {
+public abstract class KeyedCompositeFilter<K, T extends Filter> implements Filter {
 
     protected FilterConfig filterConfig;
 

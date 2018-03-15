@@ -12,7 +12,7 @@ import com.github.iamshijun.passport.util.WebUtils;
  *
  * @param <T>
  */
-public abstract class AbstractServerBasedCompositeCasFilter<T extends Filter> extends KeydCompositeFilter<String, T> {
+public abstract class AbstractServerBasedCompositeCasFilter<T extends Filter> extends KeyedCompositeFilter<String, T> {
 
 	protected String getKey(HttpServletRequest request){
 		return WebUtils.getBasePath(request);
