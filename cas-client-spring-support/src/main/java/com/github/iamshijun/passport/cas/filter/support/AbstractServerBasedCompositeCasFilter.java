@@ -1,12 +1,7 @@
 package com.github.iamshijun.passport.cas.filter.support;
 
-import java.io.IOException;
-
 import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.github.iamshijun.passport.util.WebUtils;
 
@@ -17,15 +12,10 @@ import com.github.iamshijun.passport.util.WebUtils;
  *
  * @param <T>
  */
-public abstract class AbstractServerBasedCompositeCasFilter<T extends Filter> extends AbstractCompositeCasFilter<String, T> {
+public abstract class AbstractServerBasedCompositeCasFilter<T extends Filter> extends KeydCompositeFilter<String, T> {
 
-	@Override
-	protected void doInternalFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws IOException, ServletException {
-
-		this.getInnerFilter(request, WebUtils.getBasePath(request))
-				.doFilter(request, response, filterChain);
-
+	protected String getKey(HttpServletRequest request){
+		return WebUtils.getBasePath(request);
 	}
 
 }

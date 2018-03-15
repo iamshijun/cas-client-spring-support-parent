@@ -1,3 +1,6 @@
+##CAS-Client组件
+
+
 #1. 配置 
 
 	1-1. 使用者需要给定一个名称为: casPassportProperties 类型为Properties的spring bean
@@ -18,7 +21,8 @@
 	
 #2. 组件
 
-	2-1.  FilterWrapperBean 
+    2-1.  KeyedCompsiteFilter
+
+	2-2.  FilterWrapperBean 
 	类似spring的ServletWrappingController, 实际的行为有内部的Filter来执行, FilterConfig的配置由外部指定的Properties进行适配 .
-	
 	

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSessionListener;
  */
 public class SingleSignOutHttpSessionListenerDelegator implements HttpSessionListener{
 
+	//TODO(shisj) change with HttpSessionListener not a specfied type
 	private final org.jasig.cas.client.session.SingleSignOutHttpSessionListener delegator;
 	
 	

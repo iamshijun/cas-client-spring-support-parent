@@ -1,44 +1,42 @@
 package com.github.iamshijun.passport.cas.filter;
 
-import java.util.List;
-
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-
-import org.jasig.cas.client.validation.AbstractTicketValidationFilter;
-
 import com.github.iamshijun.passport.cas.filter.support.AbstractServerBasedCompositeCasFilter;
 import com.github.iamshijun.passport.cas.filter.support.Cas30TicketValidationFilterSupport;
 import com.github.iamshijun.passport.cas.handler.TicketValidationHandler;
+import org.jasig.cas.client.validation.AbstractTicketValidationFilter;
+
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author aimysaber@gmail.com
- *
  */
 public class CompositeCas30TicketValidationFilter
-		extends AbstractServerBasedCompositeCasFilter<AbstractTicketValidationFilter> {
+        extends AbstractServerBasedCompositeCasFilter<AbstractTicketValidationFilter> {
 
-	private List<TicketValidationHandler> ticketValidationHandlers;
+    private List<TicketValidationHandler> ticketValidationHandlers;
 
-	public void setTicketValidationHandlers(List<TicketValidationHandler> ticketValidationHandlers) {
-		this.ticketValidationHandlers = ticketValidationHandlers;
-		System.out.println("@@@@@@@@ ticketValidationHandlers size :" + 
-				(ticketValidationHandlers == null ? 0 : ticketValidationHandlers.size()) + " @@@@@@@@");
-	}
-	
-	@Override
-	protected AbstractTicketValidationFilter createInnerFilter(String serverName, FilterConfig config,
-			ServletRequest request) throws ServletException {
+    public void setTicketValidationHandlers(List<TicketValidationHandler> ticketValidationHandlers) {
+        this.ticketValidationHandlers = ticketValidationHandlers;
+//        System.out.println("@@@@@@@@ ticketValidationHandlers size :" +
+//                (ticketValidationHandlers == null ? 0 : ticketValidationHandlers.size()) + " @@@@@@@@");
+    }
 
-		Cas30TicketValidationFilterSupport ticketValidationFilter = 
-				new Cas30TicketValidationFilterSupport(serverName, config);
+    @Override
+    protected AbstractTicketValidationFilter createInnerFilter(
+            String serverName, FilterConfig config,
+            HttpServletRequest request) throws ServletException {
 
-		ticketValidationFilter.setTicketValidationHandlers(ticketValidationHandlers);
+        Cas30TicketValidationFilterSupport ticketValidationFilter =
+                new Cas30TicketValidationFilterSupport(serverName, config);
 
-		ticketValidationFilter.init(config);
+        ticketValidationFilter.setTicketValidationHandlers(ticketValidationHandlers);
 
-		return ticketValidationFilter;
-	}
+        ticketValidationFilter.init(config);
+
+        return ticketValidationFilter;
+    }
 
 }
